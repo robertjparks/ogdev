@@ -1,4 +1,4 @@
-#!/drives/c/strawberry/perl/bin/perl
+#!/bin/perl
 use File::Copy;
 use strict;
 
