@@ -4,3 +4,4 @@
 *.jar
 *.war
 *.ear
+winscp_log.xml
