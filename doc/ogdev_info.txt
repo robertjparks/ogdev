@@ -1,0 +1,103 @@
+Here is what we did with the base AWS image to get it to where it currenlty
+is:
+
+Lower the security level on IE so you can actually browse and download application to install:
+http://imak47.wordpress.com/2011/01/25/how-to-change-the-internet-zone-security-level-from-high-to-medium-low-in-windows-server-2008/
+
+Change timezone to EST in control panel
+
+Install chocolatey (used to install other tool quickly from command prompt)
+https://github.com/chocolatey/chocolatey/wiki/Installation
+Paste this into command prompt to install chocolatey:
+@powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
+
+
+Chocolatey installs from command prompt:
+cinst GoogleChrome
+cinst MobaXTerm
+cinst notepadplusplus
+cinst KickAssVim  (FYI-there were errors on the console, but it seems to work fine.)
+cinst tortoisesvn 
+cinst strawberryperl
+cinst kdiff3
+cinst skype
+cinst 7zip
+
+Manual installations:
+http://winscp.net/download/winscp516setup.exe
+http://www.mozilla.org/en-US/firefox/22.0a2/system-requirements/		(use 22 to work with seleniumIDE) 
+http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
+http://sourceforge.net/projects/lportal/files/Liferay%20Portal/6.1.1%20GA2/liferay-portal-tomcat-6.1.1-ce-ga2-20120731132656558.zip/download
+http://docs.seleniumhq.org/download/ (firefox extension)
+http://sourcetreeapp.com/ (git/hg UI)
+soapUI
+join.me
+jd-gui-0.3.5.windows (java decompiler free)
+https://addons.mozilla.org/en-us/firefox/addon/firebug/ (firebug firefox
+extension for debugging web pages)
+
+
+
+http://openvpn.net/index.php?option=com_content&id=357
+Do java 7_u25 (higher causes a liferay issue?)
+Do latest liferay
+Do latest spring sts
+
+open vpn setup:
+* you can only have 1 instance of a vpn user working at a time so get an extra vpn login like 'rparks2' for aws machine.
+
+svn setup:
+* paste svn://172.10.10.60/onegate into windows explorer and it pops svn repo browser
+* do full checkout to D:\onegate 
+* should end up with paths like D:\onegate\trunk and D:\onegate\branches etc
+
+give spring tool suite more memory in STS.ini:
+-Xms256m
+-Xmx2048m
+-XX:MaxPermSize=1024
+
+
+
+TODO FOR NEXT AMI....
+Xms256m=1024 on spring ini
+change eclipse intellisense delay because it is too fast for remote desktop
+Window -> Preferences -> Java/Editor/Content Assist/Auto Activation ->400ms (default is 200)
+add mobaxterm defaults for ogdb,ogsbl,ogapp,ogsoa,ogopa (symbolic names)
+add winscp defaults for ogdb,ogsbl,ogapp,ogsoa,ogopa (symbolic names)
+install commandline svn (maybe thru mobaxterm)
+setup svn to use readonly credentials
+add FF shortcut for aws management (do not save pw)
+cinst lockhunter (tool for unlocking files)
+add FF add-on 'DNS Cache' to enable/disable FF DNS cache. Needed when messing w/ hosts file
+http://mobaxterm.mobatek.net/plugins.html (install perl pluggin for mobaxterm)
+open soapUI so t doesn't give you the 1st time message
+clone ogdev repo to D:
+add D:\ogdev\bin to system PATH
+add siebel shortcut for IE
+have bruce install siebel tools
+have phil install soa tools
+add d:\devenv\bin to path
+make mobaxterm use system path
+turn off encryption on soap UI
+change the default size of the Eclipse console to the max allowed.
+make sure copy_wsdls work, need it to cache ogapp one time or figure out how to make it not prompt
+make repo for soap ui payloads
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
