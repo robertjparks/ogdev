@@ -1,0 +1,66 @@
+https://www.atlassian.com/git/workflows#!workflow-gitflow
+http://danielkummer.github.io/git-flow-cheatsheet/
+
+Gitflow/SourceTree facts:
+-you can have many features open at a time
+-by default feature start at head of develop but can be any commit that descends from develop
+-you can only have one release open at a time
+-you can only have one hotfix open at a time
+-tags can have folders so organize them via x/y or we will end up with a mess
+
+
+What it means for our clients:
+-A hotfix should not add features, only bug fixes.
+-If they need a hotfix they must take all fixes committed before the one they care about.
+-If they need a new features the must take a release which include other features and fixes.
+-If we can enforce these restrictions we greatly simplify our development and release process
+ making us more efficient and more likely to deliver a quality product. 
+
+
+Forward development:
+-developers use 'gitflow feature start' to create feature branches off 'develop' begin their work
+-developers merge develop (or the other feature branch) into their feature branch if there are dependent features
+-developers use 'gitflow feature finish' feature branches
+-when we are approaching a release ops uses 'gitflow release start' to create a release branch off of develop
+	-any features ended after this will by default go into the next release
+	-features were already started but that didn't make the cutoff can be added to the release by merging
+	 them with the release branch
+	-new features or fixes that must get into the release can be started by doing 'git flow feature start'
+	 but you need to be sure to specify the commit that the release branch is pointing to so you do not
+	 end up merging in features that are not supposed to go in.
+	 -testers should test off of the release branch.
+	 -when we are ready to ship the release, ops uses 'gitflow release finish' to merge the release into
+	  master and to tag it. All the merges should be No-ops.
+
+Hotfix development
+-ops uses 'gitflow hotfix start' to create a hotfix branch off the latest master 
+-developers checkout the hotfix branch and commit directly to it. They should also git merge their
+ commit back to develop so ops does not need to resolve merge conflict when they finish the hotfix.
+-testers test off the hotfix branch
+-when we are ready to ship the hotfix, ops uses 'gitflow hotfix finish' to merge it to master and to 
+ tag it. also the hotfix is automatically merges back into develop so it cannot be dropped on 
+ future releases. Both merges should be no-ops since developer will merge each of their commits to
+ develop ahead of time and since nobody is allowed to commit directly to master this will just move
+ the pointer up.
+ 
+Enviroments:
+ -one tracks develop (latest)
+ -one tracks release (if we are working on a release candidate)
+ -one tracks hotfix  (if we are working on a hotfix)
+ -one tracks master (always the latest production release)
+ -we should have an AMI for every tag on master branch
+ 
+Need to do:
+-need script so you can tell an env to update itself based on a branch name
+-would be nice if we could run the script via web page or something... I am 
+ picturing tester getting to decide when to pull their env and them getting 
+ to see the commits of what changed since last pull. Probably need this to
+ support both incremental and full.
+ 
+ 
+ ?? when you end a hotfix it better goto master, dev, and release. check that it goes to release!!!
+ 
+ ?? if we want to preserve the idea of testing on dev and continually promoting to test when acceptable
+	we can always have a release open and developers can merge their code into release (NO this 
+	doesn't work b/c you'll merge code that you dont want merged, you would have to reorder commits
+	and then merge.
