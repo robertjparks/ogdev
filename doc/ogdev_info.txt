@@ -57,31 +57,35 @@ give spring tool suite more memory in STS.ini:
 -XX:MaxPermSize=1024
 
 
-
-TODO FOR NEXT AMI....
+Changes 12/4/2013
 Xms256m=1024 on spring ini
-change eclipse intellisense delay because it is too fast for remote desktop
-Window -> Preferences -> Java/Editor/Content Assist/Auto Activation ->400ms (default is 200)
 add mobaxterm defaults for ogdb,ogsbl,ogapp,ogsoa,ogopa (symbolic names)
 add winscp defaults for ogdb,ogsbl,ogapp,ogsoa,ogopa (symbolic names)
-install commandline svn (maybe thru mobaxterm)
-setup svn to use readonly credentials
 add FF shortcut for aws management (do not save pw)
-cinst lockhunter (tool for unlocking files)
 add FF add-on 'DNS Cache' to enable/disable FF DNS cache. Needed when messing w/ hosts file
-http://mobaxterm.mobatek.net/plugins.html (install perl pluggin for mobaxterm)
-open soapUI so t doesn't give you the 1st time message
+cinst lockhunter (tool for unlocking files)
+http://mobaxterm.mobatek.net/plugins.html (install perl/svn/python pluggin for mobaxterm)
 clone ogdev repo to D:
+make ogsbl the IE homepage
 add D:\ogdev\bin to system PATH
-add siebel shortcut for IE
+make mobaxterm use system path
+open soapUI so t doesn't give you the 1st time message
+turn off encryption on soap UI
+
+TODO FOR NEXT AMI....
+change eclipse intellisense delay because it is too fast for remote desktop
+Window -> Preferences -> Java/Editor/Content Assist/Auto Activation ->400ms (default is 200)
+change the default size of the Eclipse console to the max allowed.
+
+
+
 have bruce install siebel tools
 have phil install soa tools
-add d:\devenv\bin to path
-make mobaxterm use system path
-turn off encryption on soap UI
-change the default size of the Eclipse console to the max allowed.
+
+
+
+
 make sure copy_wsdls work, need it to cache ogapp one time or figure out how to make it not prompt
-make repo for soap ui payloads
 
 
 

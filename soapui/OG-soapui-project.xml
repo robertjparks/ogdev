@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="OG" resourceRoot="" soapui-version="4.6.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="OneGateHealthInsurancePlansService" type="wsdl" bindingName="{http://siebel.com/OneGateHealthInsurancePlansService}OneGateHealthInsurancePlansService" soapVersion="1_1" anonymous="optional" definition="file:/D:/u01/app/onegate/wsdl/OneGate%20Health%20Insurance%20Plans%20Service.WSDL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/D:/u01/app/onegate/wsdl/OneGate%20Health%20Insurance%20Plans%20Service.WSDL"><con:part><con:url>file:/D:/u01/app/onegate/wsdl/OneGate%20Health%20Insurance%20Plans%20Service.WSDL</con:url><con:content><![CDATA[<definitions targetNamespace="http://siebel.com/OneGateHealthInsurancePlansService" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsdLocal1="http://www.siebel.com/xml/OneGate%20Health%20Insurance%20Plans" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://siebel.com/OneGateHealthInsurancePlansService">
+<con:soapui-project activeEnvironment="Default" name="OG" resourceRoot="" soapui-version="4.6.2" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="OneGateHealthInsurancePlansService" type="wsdl" bindingName="{http://siebel.com/OneGateHealthInsurancePlansService}OneGateHealthInsurancePlansService" soapVersion="1_1" anonymous="optional" definition="file:/D:/u01/app/onegate/wsdl/OneGate%20Health%20Insurance%20Plans%20Service.WSDL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/D:/u01/app/onegate/wsdl/OneGate%20Health%20Insurance%20Plans%20Service.WSDL"><con:part><con:url>file:/D:/u01/app/onegate/wsdl/OneGate%20Health%20Insurance%20Plans%20Service.WSDL</con:url><con:content><![CDATA[<definitions targetNamespace="http://siebel.com/OneGateHealthInsurancePlansService" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsdLocal1="http://www.siebel.com/xml/OneGate%20Health%20Insurance%20Plans" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://siebel.com/OneGateHealthInsurancePlansService">
   <types>
     <xsd:schema elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://www.siebel.com/xml/OneGate%20Health%20Insurance%20Plans">
       <xsd:annotation>
@@ -4285,7 +4285,8 @@
  
          <oneg1:ListOfOnegateContact>
             <!--Zero or more repetitions:-->
-            <oneg1:Contact Operation="query"> 
+            <oneg1:Contact Operation="query">
+ 
 
             <!--
             <oneg1:Id>1-7MEHY</oneg1:Id>     
@@ -4296,7 +4297,8 @@
  
             </oneg1:Contact>
          </oneg1:ListOfOnegateContact>
-         <oneg:StatusObject>true</oneg:StatusObject>
+         <oneg:StatusObject>true</oneg:StatusObject>
+
       </oneg:OneGateContactService_Input>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="document/http://siebel.com/OneGateContactService:OneGateContactService"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
