@@ -1,12 +1,11 @@
-Here is what we did with the base AWS image to get it to where it currenlty
-is:
+Here is what we did with the base AWS image to get it to where it currently is:
 
 Lower the security level on IE so you can actually browse and download application to install:
 http://imak47.wordpress.com/2011/01/25/how-to-change-the-internet-zone-security-level-from-high-to-medium-low-in-windows-server-2008/
 
 Change timezone to EST in control panel
 
-Install chocolatey (used to install other tool quickly from command prompt)
+Install chocolatey (used to install other tools quickly from command prompt)
 https://github.com/chocolatey/chocolatey/wiki/Installation
 Paste this into command prompt to install chocolatey:
 @powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
@@ -57,7 +56,9 @@ give spring tool suite more memory in STS.ini:
 -XX:MaxPermSize=1024
 
 
-Changes 12/4/2013
+============= CHANGE LOG =============
+
+------------- 12/4/2013 --------------
 Xms256m=1024 on spring ini
 add mobaxterm defaults for ogdb,ogsbl,ogapp,ogsoa,ogopa (symbolic names)
 add winscp defaults for ogdb,ogsbl,ogapp,ogsoa,ogopa (symbolic names)
@@ -69,39 +70,33 @@ clone ogdev repo to D:
 make ogsbl the IE homepage
 add D:\ogdev\bin to system PATH
 make mobaxterm use system path
-open soapUI so t doesn't give you the 1st time message
+open soapUI so it doesn't give you the 1st time message
 turn off encryption on soap UI
-
-TODO FOR NEXT AMI....
-change eclipse intellisense delay because it is too fast for remote desktop
-Window -> Preferences -> Java/Editor/Content Assist/Auto Activation ->400ms (default is 200)
+change eclipse intellisense delay because it is too fast for remote desktop:Window -> Preferences -> Java/Editor/Content Assist/Auto Activation ->400ms (default is 200)
+change eclipse formatter->maximum line width=240
 change the default size of the Eclipse console to the max allowed.
+eclipse > Windows > Preferences > General -> Workspace -> Save before build
 
+------------- 12/12/2013 --------------
+Made directory C:\installation for installation files
+Changed chrome setting to auto-allow multiple file downloads
+Installed rapid environment editor
+Installed process explorer
+Installed ant 1.9.2 with jsch/scp/ssh library from \\svsi\Home\pcurrier
+Installed gradle 1.9
+Added gradle bin folder to PATH
+Added ant bin folder to PATH
+Added jdk folder to PATH
+Installed jdeveloper 11.1.1.6.0, then within jdeveloper:
+- Help -> Check for updates -> check "skip page next time" -> Next -> Next
+- (now on updates page) select Oracle SOA Composite Editor -> Next -> Finish
+- allow jdeveloper to restart
+Added SOA_HOME env var set to jdeveloper home dir
+Added ANT_HOME env var set to ant home dir
+Added ANT_OPTS, MAVEN_OPTS env vars: "-XX:PermSize=512M -XX:MaxPermSize=512M"
+Updated onegate/trunk in svn
 
-
+------------- TODO --------------
 have bruce install siebel tools
-have phil install soa tools
-
-
-
-
-make sure copy_wsdls work, need it to cache ogapp one time or figure out how to make it not prompt
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+have someone install OPA tools
 
