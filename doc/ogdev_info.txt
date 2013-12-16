@@ -57,7 +57,8 @@ give spring tool suite more memory in STS.ini:
 -XX:MaxPermSize=1024
 
 
-Changes 12/4/2013
+============= CHANGE LOG =============
+------------- 12/4/2013 --------------
 Xms256m=1024 on spring ini
 add mobaxterm defaults for ogdb,ogsbl,ogapp,ogsoa,ogopa (symbolic names)
 add winscp defaults for ogdb,ogsbl,ogapp,ogsoa,ogopa (symbolic names)
@@ -71,21 +72,15 @@ add D:\ogdev\bin to system PATH
 make mobaxterm use system path
 open soapUI so t doesn't give you the 1st time message
 turn off encryption on soap UI
-
-TODO FOR NEXT AMI....
-change eclipse intellisense delay because it is too fast for remote desktop
-Window -> Preferences -> Java/Editor/Content Assist/Auto Activation ->400ms (default is 200)
+change eclipse intellisense delay because it is too fast for remote desktop:Window -> Preferences -> Java/Editor/Content Assist/Auto Activation ->400ms (default is 200)
+change eclipse formatter->maximum line width=240
 change the default size of the Eclipse console to the max allowed.
-
-
+eclipse > Windows > Preferences > General -> Workspace -> Save before build
+------------- TODO --------------
 
 have bruce install siebel tools
 have phil install soa tools
 
-
-
-
-make sure copy_wsdls work, need it to cache ogapp one time or figure out how to make it not prompt
 
 
 
