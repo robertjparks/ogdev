@@ -82,6 +82,12 @@ have bruce install siebel tools
 have phil install soa tools
 
 
+install this selenium stuff:
+https://addons.mozilla.org/en-US/firefox/addon/flow-control/
+https://addons.mozilla.org/en-US/firefox/addon/file-logging-selenium-ide/
+https://addons.mozilla.org/en-US/firefox/addon/screenshot-on-fail-selenium/
+https://addons.mozilla.org/en-US/firefox/addon/test-results-selenium-ide/
+
 
 
 
