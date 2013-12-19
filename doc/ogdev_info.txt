@@ -96,16 +96,21 @@ Added ANT_HOME env var set to ant home dir
 Added ANT_OPTS, MAVEN_OPTS env vars: "-XX:PermSize=512M -XX:MaxPermSize=512M"
 Updated onegate/trunk in svn
 
-------------- TODO --------------
-have bruce install siebel tools
-have someone install OPA tools
+------------- 12/19/2013 --------------
 
-
-install this selenium stuff:
 https://addons.mozilla.org/en-US/firefox/addon/flow-control/
 https://addons.mozilla.org/en-US/firefox/addon/file-logging-selenium-ide/
 https://addons.mozilla.org/en-US/firefox/addon/screenshot-on-fail-selenium/
 https://addons.mozilla.org/en-US/firefox/addon/test-results-selenium-ide/
+
+install adobe flash 
+
+------------- TODO --------------
+have bruce install siebel tools
+have julien install opa tools
+
+
+
 
 
 
