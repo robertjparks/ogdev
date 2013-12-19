@@ -59,7 +59,7 @@ if(lc($name) eq 'dev'){
 }
 elsif(lc($name) eq 'test'){
 	$hosts{ogapp}="172.10.10.135\togapp\togappdev\togapptest";
-	$hosts{ogopa}="172.10.10.124\togopa\togopadev\togopatest";
+	$hosts{ogopa}="172.10.10.134\togopa\togopadev\togopatest";
 	$hosts{ogsoa}="172.10.10.132\togsoa\togsoadev\togsoatest";
 	$hosts{ogsbl}="172.10.10.149\togsbl\togsbldev\togsbltest";
 	$hosts{ogdb}="172.10.10.136\togdb\togdbdev\togdbtest";
