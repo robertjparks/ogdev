@@ -109,6 +109,7 @@ install adobe flash
 have bruce install siebel tools
 have julien install opa tools
 add IE shortcut for EKS and add it as local intranet so it works.
+unpin powershell
 
 
 
