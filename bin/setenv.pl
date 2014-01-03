@@ -1,12 +1,17 @@
 #!/bin/perl
 use File::Copy;
 use strict;
+use Data::Dumper;
+
+# globals
+my @host_types=("ogapp","ogsbl","ogsoa","ogdb","ogopa");
+my $known_hosts_dir="D:\\ogdev\\known_hosts";
 
 if($#ARGV<0){
 	print "Updates the hosts file based on a passed server using naming conventions\n";
 	print "Updates the tomcat config files with appropriate passwords for the env\n";
-	print "usage 1: ./update_hosts.pl dev\n";
-	print "usage 2: ./update_hosts.pl test\n";
+	print "usage 1: ./update_hosts.pl dev2\n";
+	print "usage 2: ./update_hosts.pl test1\n";
 	print "usage 3: ./update_hosts.pl ogapp3.3.2.2hftest.og.devexeter.com\n";
 	print "usage 4: ./update_hosts.pl ogdb3.3.2.2hftest.og.devexeter.com\n";
 	print "usage 5: ./update_hosts.pl http://ogapp3.3.2.6egpr3.og.devexeter.com:7004\n";
@@ -16,97 +21,75 @@ if($#ARGV<0){
 my $name=$ARGV[0];
 
 # Strip URL down to server name if passed
-$name=~s/http:\/\///g;
-$name=~s/:.*$//g;
+$name=cleanup_host_name($name);
 print "Updating hosts based on [$name]\n";
-
-
 
 # Since we are going to update the hosts file we need
 # to flush the dns so the host file has a good shot of 
 # getting picked up.
-print `ipconfig /flushdns`;
 
+my $is_aws=is_aws_name($name);
+my %hosts=();
 
-my $is_aws=1;
-my $var="";
-if($name eq 'dev' or $name eq 'test'){
-	$is_aws=0;
-} elsif($name=~m/^og(...?)/){
-	#print "got [$1]\n";
-	$var=$1;
-	if($var=~m/db/){
-		$var='db';
-	}
+if($is_aws){
+	%hosts=get_hosts_from_nslookup($name);
 }else{
-	print "no match\n";
-	exit 1;
+	my $known_host_file=get_known_hosts_file($name);
+	if($known_host_file eq ''){
+		die "This [$name] does not match aws convention and is not a known host:".join(',',get_known_hosts())."\n";
+	}
+	%hosts=get_hosts_from_file($known_host_file);
 }
 
+print Dumper(\%hosts);
+#print join(',',get_known_hosts());
+
+# Update the tomcat configuration files
 update_tomcat($is_aws);
 
-my %hosts=();
-my @vars=("app","sbl","soa","db","opa");
+# Update the windows hosts file
+update_windows_hosts(\%hosts);
 
-# hard code dev and test because there are no domain names 
-# for them.
-if(lc($name) eq 'dev'){
-	$hosts{ogapp}="172.10.10.126\togapp\togappdev\togapptest";
-	$hosts{ogopa}="172.10.10.124\togopa\togopadev\togopatest";
-	$hosts{ogsoa}="172.10.10.123\togsoa\togsoadev\togsoatest";
-	$hosts{ogsbl}="172.10.10.125\togsbl\togsbldev\togsbltest";
-	$hosts{ogdb}="172.10.10.122\togdb\togdbdev\togdbtest";
-}
-elsif(lc($name) eq 'test'){
-	$hosts{ogapp}="172.10.10.135\togapp\togappdev\togapptest";
-	$hosts{ogopa}="172.10.10.134\togopa\togopadev\togopatest";
-	$hosts{ogsoa}="172.10.10.132\togsoa\togsoadev\togsoatest";
-	$hosts{ogsbl}="172.10.10.149\togsbl\togsbldev\togsbltest";
-	$hosts{ogdb}="172.10.10.136\togdb\togdbdev\togdbtest";
-}else{
-	foreach my $v (@vars){
-		my $new=$name;
-		$new=~s/$var/$v/;
-		#print "new [$new]\n";
-		my $addr=nslookup($new);
-		#print "addr=[$addr]\n";
-		#print "nslookup $new $addr\n";
-		my $og="og$v";
-		my $ogdev="og$v"."dev";
-		my $ogtest="og$v"."test";
-		$hosts{$og}="$addr\t$og\t$ogdev\t$ogtest";
-	}
+
+########################### SUBROUTINES ##########################
+
+sub flush_dns(){
+	print `ipconfig /flushdns`;
 }
 
-
-# backup and update hosts file
-my $hosts_file='C:\Windows\System32\drivers\etc\hosts';
-my $hosts_backup='C:\Windows\System32\drivers\etc\hosts.bak';
-copy($hosts_file,$hosts_backup) or die "Copy failed: $!";
-print "Created backup host file: $hosts_backup\n";
-open (FH, "<$hosts_backup")  || die "Can't open $hosts_backup: $!\n";
-open (OUT, ">$hosts_file")  || die "Can't open $hosts_file: $!\n";
-while(<FH>){
-	my $ln=$_;
-	my $update_flag=0;
-	foreach my $k (keys %hosts){
-		if($ln=~m/^[0-9]+.*$k.*/){
-			print "UPDATED: ".$ln;
-			print "TO THIS: $hosts{$k}\n";
-			print OUT "$hosts{$k}\n";
-			$update_flag=1;
+# Given a hosts hash, update the windows hosts file
+sub update_windows_hosts(\%){
+	my $hosts_ref=shift;
+	my %hosts=%$hosts_ref;
+	#print Dumper(\%hosts);
+        my $win_newline = "\015\012";
+	# backup and update hosts file
+	my $hosts_file='C:\Windows\System32\drivers\etc\hosts';
+	my $hosts_backup='C:\Windows\System32\drivers\etc\hosts.bak';
+	copy($hosts_file,$hosts_backup) or die "Copy failed: $!";
+	print "Created backup host file: $hosts_backup\n";
+	open (FH, "<$hosts_backup")  || die "Can't open $hosts_backup: $!\n";
+	open (OUT, ">$hosts_file")  || die "Can't open $hosts_file: $!\n";
+	# keep original host file but skip out host types
+	while(<FH>){
+		my $ln=$_;
+		my @parts=split /\s+/, $ln;
+		#print "parts=" .  (join '|', @parts ) . "\n";
+		if($#parts >= 1 and exists $hosts{$parts[1]}){
+			#print "SKIP EXISTING: ".$ln;
 			next;
 		}
-	}
-	if(!$update_flag){
+		#print "KEEP EXISTING: ".$ln;
 		print OUT $ln;
 	}
+	# append our new hosts
+	foreach my $k (keys %hosts){
+		print OUT "$hosts{$k}" . $win_newline;
+	}
+	close (FH);
+	close (OUT);
+	print "Done updating host file: $hosts_file!\n";
 }
-close (FH);
-close (OUT);
-print "Done updating host file: $hosts_file!\n";
-
-
 
 # given a host name lookup the IPADDRESS
 sub nslookup($){
@@ -188,3 +171,102 @@ sub update_tomcat($){
 	}
 }
 
+
+# Builds the hosts hash by inferring host names from the
+# passed hostname and then doing an nslookup
+sub get_hosts_from_nslookup($){
+	my $host_name=shift;
+	my $host_suffix=get_aws_host_suffix($host_name);
+	my %hosts=();
+	foreach my $host_type (@host_types){
+		my $derived_name=$host_type . $host_suffix;
+		#print "derived_name [$derived_name]\n";
+		my $addr=nslookup($derived_name);
+		#print "addr=[$addr]\n";
+		#print "nslookup $derived_name $addr\n";
+		my $og="$host_type";
+		my $ogdev="$host_type"."dev";
+		my $ogtest="$host_type"."test";
+		$hosts{$og}="$addr\t$og\t$ogdev\t$ogtest";
+	}
+	return %hosts;
+}
+
+# Builds the hosts hash by grepping the passed hosts file
+sub get_hosts_from_file($){
+	my $file=shift;
+	my %hosts=();
+	print "Reading host file: $file!\n";
+	open (FH, "<$file")  || die die "get_hosts_hash_via_file can't open file $file: $!\n";
+	while(<FH>){
+		my $ln=$_;
+		$ln=~s/\r?\n//g;
+		foreach my $host_type (@host_types){
+			if($ln=~m/^[0-9]+.*$host_type.*/){
+				$hosts{$host_type}=$ln;
+				next;
+			}else{
+			}
+		}
+	}
+	close (FH);
+	return %hosts;
+}
+
+# Takes in a hostname that might be a url and returns the pure domain name
+sub cleanup_host_name($){
+	my $name=shift;
+	$name=~s/http:\/\///g;
+	$name=~s/:.*$//g;
+	return $name;
+}
+
+# Return 1 if passed name matches aws convention
+sub is_aws_name($){
+	my $name=shift;
+	foreach my $host_type (@host_types){
+		if($name=~m/^$host_type/){
+			return 1;
+		}
+	}
+	return '';
+}
+
+# Given an aws host name like ogapp.blah return '.blah'
+sub get_aws_host_suffix($){
+	my $name=shift;
+	foreach my $host_type (@host_types){
+		if($name=~m/^$host_type/){
+			return substr $name, length($host_type);
+		}
+	}
+	die "Error in get_aws_host_suffix [$name] didn't match an aws host type\n";
+}
+
+# returns "" host is not known, else returns path to host file.
+sub get_known_hosts_file($){
+	my $name=shift;
+	my $hosts_file=$known_hosts_dir."\\hosts.".$name;
+	print "looking for file:$hosts_file\n";
+	if(-e $hosts_file){
+		return $hosts_file;
+	}
+	return '';
+}
+
+# return the list of known hosts
+sub get_known_hosts(){
+	my @known_hosts=();	
+	chdir($known_hosts_dir) or die "$!";
+	my @files =glob "*";
+	foreach my $f (@files){
+		if($f=~m/hosts.(.+)$/){
+			my $host_name=$1;
+			#print "$host_name\n";
+			push @known_hosts,$host_name;
+		}else{
+			#print "unexpected file: $f\n";
+		}
+	}
+	return @known_hosts;
+}
