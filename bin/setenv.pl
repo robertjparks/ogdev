@@ -1,11 +1,17 @@
 #!/bin/perl
+use Cwd;
 use File::Copy;
+use File::Basename;
 use strict;
 use Data::Dumper;
 
 # globals
 my @host_types=("ogapp","ogsbl","ogsoa","ogdb","ogopa");
 my $known_hosts_dir="D:\\ogdev\\known_hosts";
+my $known_conf_dir='D:\ogdev\tomcat\conf\Catalina\localhost';
+my $webapps_dir='D:\liferay-portal-6.1.1-ce-ga2\tomcat-7.0.27\webapps';
+my $tomcat_deploy_dir='D:\liferay-portal-6.1.1-ce-ga2\deploy';
+my $tomcat_conf_dir='D:\liferay-portal-6.1.1-ce-ga2\tomcat-7.0.27\conf\Catalina\localhost';
 
 if($#ARGV<0){
 	print "Updates the hosts file based on a passed server using naming conventions\n";
@@ -19,6 +25,7 @@ if($#ARGV<0){
 	exit 0;
 }
 my $name=$ARGV[0];
+
 
 # Strip URL down to server name if passed
 $name=cleanup_host_name($name);
@@ -45,7 +52,7 @@ print Dumper(\%hosts);
 #print join(',',get_known_hosts());
 
 # Update the tomcat configuration files
-update_tomcat($is_aws);
+update_tomcat_conf($is_aws?'aws':$name);
 
 # Update the windows hosts file
 update_windows_hosts(\%hosts);
@@ -125,12 +132,88 @@ sub nslookup($){
 	 return $addr;
 }
 
+sub update_tomcat_conf($){
+	my $name=shift;
+	my $root_file=$known_conf_dir ."\\ROOT." . $name . ".xml";
+	if(not -e $root_file){
+		die "cannot find appropriate tomcat password file [$root_file]\n";
+	}
+	# loop thru existing conf files and overwrite them
+	# loop thru any deploy dir wars and create conf for them
+	# loop thru any webapps and create conf for them
+	my @all_webapp_files=(
+		get_tomcat_deploy_wars(),
+		get_tomcat_webapps(),
+		get_tomcat_conf_files()
+	);
+	my %conf_files=();
+	foreach my $f (@all_webapp_files){
+		my($filename, $dir, $suffix)=fileparse($f, qr/\.[^.]*/);
+		#print "f=[$f] filename=$filename,dir=$dir,suffix=$suffix\n";
+		my $conf_name=$filename . '.xml';
+		$conf_files{$conf_name}=1;
+	}
+	foreach my $conf_file (keys %conf_files){
+		print "$conf_file\n";
+		my $conf_path=$tomcat_conf_dir . "\\" . $conf_file;
+		print "cp $root_file $conf_path\n";
+		copy($root_file,$conf_path) or die "Copy failed: $!";
+	}
+}
+
+# return any existing tomcat conf files
+sub get_tomcat_conf_files(){
+	my @array=();
+	foreach my $war (grep /\.xml$/,get_files($tomcat_conf_dir)){
+		#print "found xml=$war\n";
+		push @array,$war;
+	}
+	return @array;
+}
+
+# return any pending tomcat deploy wars
+sub get_tomcat_deploy_wars(){
+	my @array=();
+	foreach my $war (grep /\.war$/,get_files($tomcat_deploy_dir)){
+		#print "found war=$war\n";
+		push @array,$war;
+	}
+	return @array;
+}
+
+# return tomcat webapps sub dirs
+sub get_tomcat_webapps(){
+	my @array=();
+	foreach my $webapp (get_sub_directories($webapps_dir)){
+		#print "found webapp=$webapp\n";
+		push @array,$webapp;
+	}
+	return @array;
+}
+
+# return the files under the passed directory
+sub get_files($){
+	my $dir=shift;
+	chdir($dir) or die "cannot find dir [$dir]: $!";
+	my @array = grep -f, map { Cwd::abs_path($_) } glob "*";
+	return @array; 
+}
+
+# return sub directories of passed directory
+sub get_sub_directories($){
+	my $dir=shift;
+	chdir($dir) or die "cannot find dir [$dir]: $!";
+	my @array = grep -d, map { Cwd::abs_path($_) } glob "*";
+	return @array;
+}
+
 
 # Update the tomcat config files with the correct passwords
 # our aws machines have username=password for db logins
 # out colo machines have username=password12345 for db logins
 sub update_tomcat($){
 	my $is_aws=shift;
+	$is_aws=1;
 	# foreach file in D:\liferay-portal-6.1.1-ce-ga2\tomcat-7.0.27\conf\Catalina\localhost\*.xml
 	# if (aws) set pw=username else set pw=username12345
 	my $dir='D:\liferay-portal-6.1.1-ce-ga2\tomcat-7.0.27\conf\Catalina\localhost';
