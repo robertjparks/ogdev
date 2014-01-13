@@ -15,14 +15,17 @@ my $tomcat_conf_dir='D:\liferay-portal-6.1.1-ce-ga2\tomcat-7.0.27\conf\Catalina\
 my %tomcat_conf_skip_names=('manager'=>1,'lib'=>1,'probe'=>1);
 
 if($#ARGV<0){
-	print "Updates the hosts file based on a passed server using naming conventions\n";
-	print "Updates the tomcat config files with appropriate passwords for the env\n";
-	print "usage 1: ./update_hosts.pl dev2\n";
-	print "usage 2: ./update_hosts.pl test1\n";
-	print "usage 3: ./update_hosts.pl ogapp3.3.2.2hftest.og.devexeter.com\n";
-	print "usage 4: ./update_hosts.pl ogdb3.3.2.2hftest.og.devexeter.com\n";
-	print "usage 5: ./update_hosts.pl http://ogapp3.3.2.6egpr3.og.devexeter.com:7004\n";
-	print "Pretty much any server name ogapp, ogdb, or valid URL will work\n";
+	print "Updates the enviroment based on AWS naming conventions\n";
+	print "Pretty much any server name ogapp, ogdb, or URL will work\n";
+	print "usage 1: ./update_hosts.pl ogapp3.3.2.2hftest.og.devexeter.com\n";
+	print "usage 2: ./update_hosts.pl ogdb3.3.2.2hftest.og.devexeter.com\n";
+	print "usage 3: ./update_hosts.pl http://ogapp3.3.2.6egpr3.og.devexeter.com:7004\n";
+	print "\n";
+	print "Update enviroment using known hosts in D:\\ogdev\\known_hosts\n";
+	my $i=4;
+	foreach my $host (get_known_hosts()){
+		print "usage ".($i++).": ./update_hosts.pl $host\n";
+	}
 	exit 0;
 }
 my $name=$ARGV[0];

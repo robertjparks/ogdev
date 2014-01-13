@@ -1,1 +1,1 @@
-"C:\Program Files (x86)\WinSCP\WinSCP.exe" /console /xmllog=winscp_log.xml /command "option batch abort" "open sftp://oracle:ogapppass@ogapp" "get /u01/app/onegate/wsdl/*.* d:\u01\app\onegate\wsdl\" "exit"
+"C:\Program Files (x86)\WinSCP\WinSCP.exe" /console /xmllog=winscp_log.xml /command "option batch abort" "option confirm off" "open sftp://oracle:ogapppass@ogapp" "get /u01/app/onegate/wsdl/*.* d:\u01\app\onegate\wsdl\" "exit"
