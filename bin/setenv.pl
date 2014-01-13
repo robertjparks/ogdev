@@ -12,6 +12,7 @@ my $known_conf_dir='D:\ogdev\tomcat\conf\Catalina\localhost';
 my $webapps_dir='D:\liferay-portal-6.1.1-ce-ga2\tomcat-7.0.27\webapps';
 my $tomcat_deploy_dir='D:\liferay-portal-6.1.1-ce-ga2\deploy';
 my $tomcat_conf_dir='D:\liferay-portal-6.1.1-ce-ga2\tomcat-7.0.27\conf\Catalina\localhost';
+my %tomcat_conf_skip_names=('manager'=>1,'lib'=>1,'probe'=>1);
 
 if($#ARGV<0){
 	print "Updates the hosts file based on a passed server using naming conventions\n";
@@ -149,9 +150,13 @@ sub update_tomcat_conf($){
 	my %conf_files=();
 	foreach my $f (@all_webapp_files){
 		my($filename, $dir, $suffix)=fileparse($f, qr/\.[^.]*/);
-		#print "f=[$f] filename=$filename,dir=$dir,suffix=$suffix\n";
-		my $conf_name=$filename . '.xml';
-		$conf_files{$conf_name}=1;
+		if(!exists $tomcat_conf_skip_names{$filename}){
+			#print "f=[$f] filename=$filename,dir=$dir,suffix=$suffix\n";
+			my $conf_name=$filename . '.xml';
+			$conf_files{$conf_name}=1;
+		}else{
+			print "Skipping f=[$f] filename=$filename,dir=$dir,suffix=$suffix\n";
+		}
 	}
 	foreach my $conf_file (keys %conf_files){
 		print "$conf_file\n";
