@@ -1,7 +1,7 @@
 <Context path="" crossContext="true">
 	
 	<Resource name="jdbc/LiferayPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
-                url="jdbc:oracle:thin:@ogdb:1521:ogappdb" username="lportal" password="lportal12345"
+                url="jdbc:oracle:thin:@ogdb:1521:ogappdb" username="lportal" password="lportal"
                 maxActive="20" maxIdle="10" maxWait="10000" />
 	
 	<Resource name="jdbc/OpaPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
@@ -26,4 +26,3 @@
 	 
 
 </Context>
-
