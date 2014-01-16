@@ -105,8 +105,74 @@ https://addons.mozilla.org/en-US/firefox/addon/test-results-selenium-ide/
 
 install adobe flash 
 
+
+-------------- 01/14/2014 --------------
+
+1. Downloaded 4 Siebel Tools and Web Client zip files to C:\SiebelInstallZipFiles
+	- V36457-01_1of2.zip
+	- V36457-01_2of2.zip
+	- V36458-01_1of2.zip
+	- V36458-01_2of2.zip
+
+2. Downloaded Siebel Image Creator file (V31103-01.zip) to C:\SiebelInstallZipFiles
+3. Downloaded Oracle Database Client Installation zip file (win32_11gR2_client.zip) to C:\SiebelInstallZipFiles
+
+4. Extracted jar files for Siebel tools, Web Client and Image Creator to C:\8.2.2.0SiebelJARs
+5. Extracted Oracle Database Client installation folder to C:\SiebelInstallZipFiles
+
+6. Created a Siebel installation image at C:\Siebel_Install_Image. This provides the installation files for Siebel Tools and Web Client. These
+   installers use the jar files extracted in step 4.
+	
+7. Installed the Oracle Database Client at C:\app. This is required to allow connectivity to any Oracle Database.
+8. Using the files in the Siebel installation image, installed Siebel Tools and Web Client to C:\Siebel\8.2.2.0.0
+
+9. Edited C:\app\Administrator\product\11.2.0\client_1\network\admin\tnsnames.ora, creating a database address source for Siebel DEV2 as "SBLDEV".
+10. Edited C:\Siebel\8.2.2.0.0\Tools_1\BIN\ENU\tools.cfg to point to 172.10.10.125 (Siebel DEV2)
+11. Added an ODBC Data Source for SBLDEV at C:\Windows\SysWOW64\odbcad32.exe
+12. At this stage, using Siebel tools it was possible to log in directly to the Siebel DEV2 server using SADMIN/SADMIN123 as credentials and selecting "Server" from
+	the drop down at log in. It	took around 6-7 minutes to log in directly to the server this way. Given that development does
+	not occur directly on the Server, it was necessary to set up a local environment for development.
+
+13. To set up a database to allow for local Siebel development, a new database was generated and then extracted in the Siebel UI for user "ONEGATEUSER"
+14. To set up local Siebel tools, attempted to log in using ONEGATEUSER/ONEGATEUSERPASS, selecting "Local" from the drop down at log in. This began a process of extracting the 
+	database generated in step 13. , setting up the local dev environment. After this, it was possible to log in to Siebel Tools using ONEGATEUSER/ONEGATEUSERPASS and "Local" as the source.
+	NOTE: ONEGATEUSER/ONEGATEUSERPASS will be the credentials that any developer will use for local development on this machine.
+	
+15. Downloaded Tortoise SVN, making sure that the SVN command line tools were included within the installation so that auto check out/check in of Siebel objects could occur in
+	Siebel Tools.
+	
+16. Edited C:\Siebel\8.2.2.0.0\Tools_1\BIN\srcctrl.bat to allow for SVN Check Out/Check In's in Siebel tools. SVN username/password set to OneGate/OneGate.
+17. Edited the registry to add 4 required parameters using the following steps:
+
+	1. Start -> Run -> Regedit
+	2. HKEY_CURRENT_USER -> Software -> ODBC -> SBLDEV
+	3. Added 4 new String values: EnableScrollableCursors (Value 0) , PacketSize (Value = 0), ColumnsAsChar (Value = 1), ColumnSizeAsCharacter (Value = 1)
+
+	At this stage, check out/check in of objects to SVN (and addition of files to D:/onegate) was verified as working correctly. HOWEVER, it is important to note that any
+	developer using this machine will have to edit the SVN username/password (currently OneGate/OneGate) in C:\Siebel\8.2.2.0.0\Tools_1\BIN\srcctrl.bat to identify their check in's.
+
+18.	To set up the Siebel Web Client, the local database file (sse_data.dbf) was copied from C:\Siebel\8.2.2.0.0\Tools_1\LOCAL to C:\Siebel\8.2.2.0.0\Client_1\LOCAL
+
+19. Edited C:\Siebel\8.2.2.0.0\Client_1\BIN\ENU\publicsector.cfg. Changed field ServerDbODBCDataSource in the [Siebel] section, the values ConnectString, TableOwner, GatewayAddress, 
+	EnterpriseServer in the [ServerDataSrc] section and the values ConnectString and EnterpriseServer in [GatewayDataSrc]
+
+19. Went to ODBC data source at C:\Windows\SysWOW64\odbcad32.exe -> System DSN Tab. Selected "SEAW Local Db default instance" and clicked configure. Went to the database tab,
+	and removed all of the information in the Server Name and Start Line text boxes. Clicked "Browse" beside the database file name and navigated to
+	C:\Siebel\8.2.2.0.0\Client_1\LOCAL, making sure that the value in this field reads C:\Siebel\8.2.2.0.0\Client_1\LOCAL\sse_data.dbf
+	
+20. Still in ODBC Data Source, went to the Login tab, and entered credentials ONEGATEUSER/ONEGATEUSERPASS. Tested this connection in the ODBC tab and this was successful.
+
+21. Edited C:\Siebel\8.2.2.0.0\Client_1\WEBTEMPL to include 4 OneGate specific .swt files
+
+22. Edited the properties of the Siebel Web Client Shortcut for default (a)username  (b)password and (c)datasource ( (a) ONEGATEUSER, (b) ONEGATEUSERPASS, (c) ServerDataSrc)
+
+23. Replaced the SRF file at C:\Siebel\8.2.2.0.0\Client_1\OBJECTS\ENU. Using the shortcut, "Siebel Public Sector - ENU" (which is the web client), the Siebel UI was succesfully loaded.
+
+
+
+
 ------------- TODO --------------
-have bruce install siebel tools
+
 have julien install opa tools
 
 
