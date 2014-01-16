@@ -169,13 +169,15 @@ install adobe flash
 23. Replaced the SRF file at C:\Siebel\8.2.2.0.0\Client_1\OBJECTS\ENU. Using the shortcut, "Siebel Public Sector - ENU" (which is the web client), the Siebel UI was succesfully loaded.
 
 
+-------------- 01/15/2014 --------------
+Installed Greenshot
+http://getgreenshot.org/thank-you/?language=en&version=1.1.7.17
 
 
 ------------- TODO --------------
 
 have julien install opa tools
 add IE shortcut for EKS and add it as local intranet so it works.
-unpin powershell
 
 
 
