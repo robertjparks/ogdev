@@ -1,0 +1,28 @@
+<Context path="" crossContext="true">
+	
+	<Resource name="jdbc/LiferayPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
+                url="jdbc:oracle:thin:@ogdb:1521:ogappdb" username="lportal" password="lportal"
+                maxActive="20" maxIdle="10" maxWait="10000" />
+	
+	<Resource name="jdbc/OpaPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@ogdb:1521:ogappdb" username="opa" password="opa12345"
+			maxActive="20" maxIdle="10" maxWait="10000" />
+			
+	<Resource name="jdbc/OgAuthPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@ogdb:1521:ogappdb" username="ogauth" password="ogauth12345"
+			maxActive="20" maxIdle="10" maxWait="10000" />
+			
+	<Resource name="jdbc/EmployerShopPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@ogdb:1521:ogappdb" username="hbeemployer" password="hbeemployer12345"
+			maxActive="20" maxIdle="10" maxWait="10000" />
+			
+	<Resource name="jdbc/GlossaryPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
+                url="jdbc:oracle:thin:@ogdb:1521:ogappdb " username="onegateGlossary" password="onegateGlossary12345"
+                maxActive="20" maxIdle="10" maxWait="10000" />	
+				
+	<Resource name="jdbc/ExtVerPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
+                url="jdbc:oracle:thin:@ogdb:1521:ogappdb" username="extver" password="extver12345"
+                                maxActive="20" maxIdle="10" maxWait="10000" />
+	 
+
+</Context>
