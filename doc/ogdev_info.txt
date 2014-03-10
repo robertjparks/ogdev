@@ -176,9 +176,13 @@ http://getgreenshot.org/thank-you/?language=en&version=1.1.7.17
 
 ------------- TODO --------------
 
+remove the trailing garbage from the IE siebel shortcut
+make the hosts file point to egbuild (new *.90)
+remove the .SHELF files from og-api in trunk
+
 have julien install opa tools
 add IE shortcut for EKS and add it as local intranet so it works.
-remove the .SHELF files from og-api in trunk
+
 
 
 
