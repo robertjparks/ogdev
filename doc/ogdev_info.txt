@@ -174,10 +174,22 @@ Installed Greenshot
 http://getgreenshot.org/thank-you/?language=en&version=1.1.7.17
 
 
+-------------- 03/12/2014 --------------
+remove the trailing garbage from the IE siebel shortcut
+installed office 356 (but do not login)
+make the hosts file point to egbuild (new *.91)
+removed the .SHELF files from og-api in trunk
+add IE shortcut for EKS and add it as local intranet so it works.
+OPM 10.4.4.21 has been installed 
+make .txt and .xml open with notepad++ (instead of vim)
+
 ------------- TODO --------------
 
-have julien install opa tools
-add IE shortcut for EKS and add it as local intranet so it works.
+
+
+
+
+
 
 
 
