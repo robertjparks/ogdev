@@ -42,6 +42,40 @@ foreach my $f (@files){
 	print "Done scraping file: $f!\n";
 }
 
+foreach my $f (@files){
+	my $ex='';
+	my $at='';
+	open (FH, "<$f")  || die "Can't open $f: $!\n";
+	while(<FH>){
+		my $ln=$_;
+		if($ln=~m/ERROR \[.*http/){
+			#print "GOT: ".$ln;
+			if($ln=~m/^.*\](.*)$/){
+				$at="$1\n";
+				$ex=$ln;
+				#print "GOT: $1\n";
+				if(!exists $at_count{$at}){
+					#print "EX=$ex";
+					#print "AT=$at";
+					$at_count{$at}=1;
+					$at_ex{$at}=$ex;
+					$at_ex_last{$at}=$ex;
+				}else{
+					$at_count{$at}++;
+					$at_ex_last{$at}=$ex;
+				}
+				$ex='';
+				$at='';
+			}else{
+				die "unhandled line: $ln\n";
+			}
+		}
+	}
+	close (FH);
+	print "Done scraping file: $f!\n";
+}
+#exit;
+
 print "MAX TO MIN...........\n";
 my @keys = sort { $at_count{$b} <=> $at_count{$a} } keys(%at_count);
 foreach my $at (@keys){
@@ -55,4 +89,3 @@ foreach my $at (@keys){
 	print "\n";
 }
 
-sub e
