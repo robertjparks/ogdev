@@ -193,13 +193,13 @@ relocated the svn folder to new aws svn
 changed siebel.properties to SADMIN instead of ONEGATEUSER
 added the new VPN profile, in case you create an image outside our network
 installed eclemma code coverage pluggin for eclipse sts
-
-
-------------- TODO --------------
-Might have to copy the /u01 folder from D: to C: (there must be something hard coded that isn't using OGHOME!!)
-Deploy these themes
+Put these in liferay deploy
     svn://svn2/onegate/trunk/web/liferay/layouts/og-SitemapLayout-layouttpl.war
     svn://svn2/onegate/trunk/web/liferay/layouts/OneGate 1-2 Column (25-75) CE Layout.war
+	
+------------- TODO --------------
+Might have to copy the /u01 folder from D: to C: (there must be something hard coded that isn't using OGHOME!!)
+
 
 
 
