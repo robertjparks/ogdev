@@ -7,6 +7,10 @@
 	<Resource name="jdbc/OpaPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
 			url="jdbc:oracle:thin:@ogdb:1521:ogappdb" username="opa" password="opa12345"
 			maxActive="20" maxIdle="10" maxWait="10000" />
+
+	<Resource name="jdbc/OgApiPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@ogdb:1521:ogsbldb" username="ONEGATEUSER" password="ONEGATEUSERPASS"
+			maxActive="20" maxIdle="10" maxWait="10000" />
 			
 	<Resource name="jdbc/OgAuthPool" auth="Container" type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
 			url="jdbc:oracle:thin:@ogdb:1521:ogappdb" username="ogauth" password="ogauth12345"
